@@ -121,7 +121,7 @@ def apply_for_ride(request, route_id, request_id):
     ride = TravelRoute.objects.get(id=route_id)
     asset_request = AssetTransportationRequest.objects.get(id=request_id)
     ride.status = 'APPLIED'
-    asset_request.rider = request.user
+    asset_request.rider = ride.rider
     asset_request.status = 'Completed'
     ride.save()
     asset_request.save()
