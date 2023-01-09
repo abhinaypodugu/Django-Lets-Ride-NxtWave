@@ -1,0 +1,51 @@
+{% extends 'layouts/default/page.html' %}
+
+{% load static %}
+
+{% block content %}
+
+    {% block css %}
+        <link rel="stylesheet" type="text/css" href="{% static 'css/style1.css' %}">
+    {% endblock %}
+
+{% if matching_rides %}
+    <div class="table-container">
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>ACCEPTED PERSON DETAILS</th>
+                <th>FROM</th>
+                <th>TO</th>
+                <th>DATE AND TIME</th>
+                <th>TRAVEL MEDIUM</th>
+                <th>LUGGAGE QUANTITY</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+            {% for ride in matching_rides %}
+                <tr>
+                    <td>{{ ride.id }}</td>
+                    <td>{{ ride.rider }}</td>
+                    <td>{{ ride.pickup_location }}</td>
+                    <td>{{ ride.dropoff_location }}</td>
+                    <td>{{ ride.start_datetime }}</td>
+                    <td>{{ ride.travel_medium }}</td>
+                    <td>{{ ride.no_of_assets }}</td>
+                    <td>{{ ride.status }}</td>
+                    <td>
+                        {% if ride.status == 'NOT_APPLIED' %}
+                            <form method="post" action="{% url 'apply_for_ride' route_id=ride.id  request_id=request_id%}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-primary">Apply</button>
+                            </form>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% else %}
+    <p>No matching rides found.</p>
+{% endif %}
+
+{% endblock %}

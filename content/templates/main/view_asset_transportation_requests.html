@@ -1,0 +1,128 @@
+{% extends 'layouts/default/page.html' %}
+
+{% load static %}
+
+{% block content %}
+
+    {% block css %}
+        <link rel="stylesheet" type="text/css" href="{% static 'css/style1.css' %}">
+    {% endblock %}
+
+<h3 style="text-align:center">Asset Transportation Requests</h3>
+
+{% if requests %}
+    <table>
+    <tr>
+        <th>ID</th>
+        <th>FROM</th>
+        <th>TO</th>
+        <th>DATE AND TIME</th>
+        <th>NO.OF ASSETS</th>
+        <th>ASSET TYPE</th>
+        <th>ASSET SENSITIVITY</th>
+        <th>WHOM TO DELIVERY</th>
+        <th>ACCEPTED PERSON DETAILS</th>
+        <th>STATUS</th>
+        <th>MATCHING RIDES</th>
+    </tr>
+    {% for request in requests %}
+        <tr>
+            <td>{{ request.id }}</td>
+            <td>{{ request.pickup_location }}</td>
+            <td>{{ request.dropoff_location }}</td>
+            <td>{{ request.start_datetime }}</td>
+            <td>{{ request.asset_count }}</td>
+            <td>{{ request.asset_type }}</td>
+            <td>{{ request.sensitivity }}</td>
+            <td>{{ request.whom_to_deliver }}</td>
+            <td>{{ request.rider }}</td>
+            <td>{{ request.status }}</td>
+            <td>
+                {% if request.status == 'Pending' %}
+                        <button type="submit" class="btn btn-primary" onclick="location.href='{% url 'view_matching_rides' request.id %}'">View Rides</button>
+                {% endif %}
+            </td>
+        </tr>
+    {% endfor %}
+    </table>
+{% else %}
+    <p>No Asset requests found.</p>
+{% endif %}
+
+{% if page.has_previous or page.has_next %}
+<div class="pagination">
+
+    {% for i in page.paginator.page_range %}
+        {% if i == page.number %}
+            <span class="page-box current-page">{{ i }}</span>
+        {% else %}
+            <a href="?page={{ i }}&sort={{ request.GET.sort }}&status={{ request.GET.status }}&asset_type={{ request.GET.asset_type }}" class="page-box">{{ i }}</a>
+        {% endif %}
+    {% endfor %}
+
+</div>
+{% endif %}
+
+
+<form style="display:inline-block" action="" method="get" class="pagination">
+    <label for="page">Page:</label>
+    <select name="page" id="page">
+        {% for i in page.paginator.page_range %}
+            <option value="{{ i }}"{% if i == page.number %} selected{% endif %}>{{ i }}</option>
+        {% endfor %}
+    </select>
+    <input type="submit" value="Go">
+</form>
+
+
+<form style="display:inline-block" method="get" action="{% url 'view_asset_transportation_requests' %}">
+    <label for="id_sort">Sort by Start Datetime:</label>
+    <select name="sort" id="id_sort">
+        <option value="asc" {% if sort == 'asc' %}selected{% endif %}>Ascending</option>
+        <option value="desc" {% if sort == 'desc' %}selected{% endif %}>Descending</option>
+    </select>
+    <button type="submit" class="btn btn-primary">Sort</button>
+    {% if status %}
+        <input type="hidden" name="status" value="{{ status }}">
+    {% endif %}
+    {% if asset_type %}
+        <input type="hidden" name="asset_type" value="{{ asset_type }}">
+    {% endif %}
+</form>
+
+<form style="display:inline-block" method="get" action="{% url 'view_asset_transportation_requests' %}">
+    <label for="id_status">Filter by Status:</label>
+    <select name="status" id="id_status">
+        <option value="" {% if status == 'all' %}selected{% endif %}>All</option>
+        <option value="Pending" {% if status == 'Pending' %}selected{% endif %}>Pending</option>
+        <option value="Expired" {% if status == 'Expired' %}selected{% endif %}>Expired</option>
+        <option value="Completed" {% if status == 'Completed' %}selected{% endif %}>Completed</option>
+
+    </select>
+    <button type="submit" class="btn btn-primary">Filter</button>
+    {% if sort %}
+        <input type="hidden" name="sort" value="{{ sort }}">
+    {% endif %}
+    {% if asset_type %}
+        <input type="hidden" name="asset_type" value="{{ asset_type }}">
+    {% endif %}
+</form>
+
+<form style="display:inline-block" method="get" action="{% url 'view_asset_transportation_requests' %}">
+    <label for="id_asset_type">Filter by Asset Type:</label>
+    <select name="asset_type" id="id_asset_type">
+        <option value="" {% if asset_type == '' %}selected{% endif %}>All</option>
+        <option value="LAPTOP" {% if asset_type == 'LAPTOP' %}selected{% endif %}>Laptop</option>
+        <option value="TRAVEL_BAG" {% if asset_type == 'TRAVEL_BAG' %}selected{% endif %}>Travel Bag</option>
+        <option value="PACKAGE" {% if asset_type == 'PACKAGE' %}selected{% endif %}>Package</option>
+    </select>
+    <button type="submit" class="btn btn-primary">Filter</button>
+    {% if status %}
+        <input type="hidden" name="status" value="{{ status }}">
+    {% endif %}
+    {% if sort %}
+        <input type="hidden" name="sort" value="{{ sort }}">
+    {% endif %}
+</form>
+
+{% endblock %}

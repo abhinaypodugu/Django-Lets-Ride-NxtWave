@@ -1,0 +1,56 @@
+{% extends 'layouts/default/page.html' %}
+
+{% load static %}
+
+{% block content %}
+
+    {% block css %}
+        <link rel="stylesheet" type="text/css" href="{% static 'css/style1.css' %}">
+    {% endblock %}
+
+<h3 style="text-align:center">Travel Routes</h3>
+
+{% if routes %}
+    <table>
+        <tr>
+                <th>ID</th>
+                <th>ACCEPTED PERSON DETAILS</th>
+                <th>FROM</th>
+                <th>TO</th>
+                <th>DATE AND TIME</th>
+                <th>TRAVEL MEDIUM</th>
+                <th>LUGGAGE QUANTITY</th>
+                <th>Status</th>
+        </tr>
+        {% for route in routes %}
+            <tr>
+                <td>{{ route.id }}</td>
+                <td>{{ route.rider }}</td>
+                <td>{{ route.pickup_location }}</td>
+                <td>{{ route.dropoff_location }}</td>
+                <td>{{ route.start_datetime }}</td>
+                <td>{{ route.travel_medium }}</td>
+                <td>{{ route.asset_capacity }}</td>
+                <td>{{ route.status }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% else %}
+    <p>No travel routes found.</p>
+{% endif %}
+
+{% if page.has_previous or page.has_next %}
+<div class="pagination">
+
+    {% for i in page.paginator.page_range %}
+        {% if i == page.number %}
+            <span class="page-box current-page">{{ i }}</span>
+        {% else %}
+            <a href="?page={{ i }}" class="page-box">{{ i }}</a>
+        {% endif %}
+    {% endfor %}
+
+</div>
+{% endif %}
+
+{% endblock %}

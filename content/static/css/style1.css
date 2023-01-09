@@ -1,0 +1,104 @@
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 20px 0;
+}
+
+th, td {
+  text-align: center;
+  padding: 8px;
+}
+
+tr:nth-child(even){background-color: #f2f2f2}
+
+th {
+  background-color: #4caf50;
+  color: white;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.pagination a {
+  color: black;
+  float: left;
+  padding: 2px 2px 8px 8px;
+  text-decoration: none;
+  transition: background-color .3s;
+  border: 1px solid #ddd;
+  margin: 0 4px;
+}
+
+.pagination a.active {
+  background-color: #4caf50;
+  color: white;
+  border: 1px solid #4caf50;
+}
+
+.pagination a:hover:not(.active) {
+  background-color: #ddd;
+}
+
+form {
+  display: flex;
+  align-items: center;
+  margin: 0 20px;
+}
+
+form label {
+  margin-right: 10px;
+}
+
+form select, form input[type="submit"] {
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+form select {
+  width: 150px;
+}
+
+form input[type="submit"] {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+}
+.page-box {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-align: center;
+    line-height: 30px;
+    margin: 0 5px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.page-box-unfocus {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-align: center;
+    line-height: 30px;
+    margin: 0 5px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+.page-box:hover {
+    background-color: skyblue;
+}
+
+.current-page {
+    background-color: #333;
+    color: #fff;
+}

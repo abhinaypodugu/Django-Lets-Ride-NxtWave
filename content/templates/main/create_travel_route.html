@@ -1,0 +1,75 @@
+{% extends 'layouts/default/page.html' %}
+
+{% load i18n %}
+
+{% load static %}
+
+{% block content %}
+
+    {% block css %}
+        <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+    {% endblock %}
+
+<h3 style="text-align:center">SHARE TRAVEL INFO</h3>
+
+<form method="post" action="{% url 'create_travel_route' %}">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="id_pickup_location">FROM</label>
+        <input type="text" class="form-control" id="id_pickup_location" name="pickup_location" required>
+    </div>
+    <div class="form-group">
+        <label for="id_dropoff_location">TO</label>
+        <input type="text" class="form-control" id="id_dropoff_location" name="dropoff_location" required>
+    </div>
+    <div class="form-group">
+        <label for="id_start_datetime">DATE AND TIME</label>
+        <input type="datetime-local" class="form-control" id="id_start_datetime" name="start_datetime" required>
+    </div>
+    <div class="form-group">
+        <label for="id_travel_medium">TRAVEL MEDIUM</label>
+        <select class="form-control" id="id_travel_medium" name="travel_medium" required>
+            <option value="BUS">Bus</option>
+            <option value="CAR">Car</option>
+            <option value="TRAIN">Train</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+    <label for="id_asset_capacity">ASSETS QUANTITY</label>
+    <div class="counter">
+        <!-- Add a minus button -->
+        <button type="button" id="minus-btn">-</button>
+        <!-- Add the input field -->
+        <input type="number" class="form-control" id="id_asset_capacity" name="asset_capacity" min="1" required value="1">
+        <!-- Add a plus button -->
+        <button type="button" id="plus-btn">+</button>
+    </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+        // Get the input field and the plus and minus buttons
+        const inputField = document.getElementById('id_asset_capacity');
+        const plusBtn = document.getElementById('plus-btn');
+        const minusBtn = document.getElementById('minus-btn');
+        
+        // Add click event listeners to the buttons
+        plusBtn.addEventListener('click', function() {
+            // Increase the value of the input field by 1
+            inputField.value = parseInt(inputField.value) + 1;
+        });
+        
+        minusBtn.addEventListener('click', function() {
+            // Decrease the value of the input field by 1, but don't go below 1
+            inputField.value = Math.max(1, parseInt(inputField.value) - 1);
+        });
+        });
+    </script>
+
+    <div style="text-align:center">
+        <button  type="submit" class="btn btn-primary">SHARE</button>
+    </div>
+</form>
+
+{% endblock %}

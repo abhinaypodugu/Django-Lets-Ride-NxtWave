@@ -1,0 +1,35 @@
+{% extends 'layouts/default/page.html' %}
+{% load static %}
+
+{% load i18n %}
+
+    {% block content %}
+
+
+    {% block css %}
+        <link rel="stylesheet" type="text/css" href="{% static 'css/welcome.css' %}">
+    {% endblock %}
+                    {% if request.user.is_authenticated %}
+
+                        <div class="card text-center">
+                            <div class="card-header">
+                                Hi.. {{ request.user.username}}
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title">Welcome to Django Lets Ride App</h5>
+                                <p class="card-text">Start creating asset transportation requests here</p>
+                                <a  href="{% url 'assets_transport_request' %}" class="btn btn-primary">Go</a>
+                            </div>
+                            <div class="card-footer text-muted">
+                                Last Login: {{ request.user.last_login}}
+                            </div>
+                        </div>
+
+                    {% else %}
+
+                        {% trans 'You are a guest.' %}
+
+                    {% endif %}
+
+        </body>
+    {% endblock %}
